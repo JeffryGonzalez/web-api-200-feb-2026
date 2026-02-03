@@ -8,7 +8,7 @@ public record CatalogItemRequest
     [Required, MinLength(3), MaxLength(100)]
     public string Title { get; set; } = string.Empty;
     [Required]
-    public string VendorId { get; set; } = string.Empty;
+    public Guid VendorId { get; set; }
 
 }
 
@@ -16,7 +16,7 @@ public record CatalogItemResponse
 {
     public required Guid Id { get; set; }
     public required string Title { get; set; } = string.Empty;
-    public required string VendorId { get; set; } = string.Empty;
+    public required Guid VendorId { get; set; }
 }
 
 public static class AddingItem
