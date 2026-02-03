@@ -7,7 +7,23 @@ public class Vendors(HttpClient client, IConfiguration config)
         var apiKey = config.GetValue<string>("VENDOR_API_KEY"); // throwing here is too late maybe.
         // The Url to to API - don't set that here. That's in program.cs.
         var response = await client.GetAsync($"/vendors/{vendorId}?apiKey={apiKey}");
-        return response.IsSuccessStatusCode;
+
+
+        if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+
+            return true;
+        } 
+        if(response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            return false;
+        }
+        response.EnsureSuccessStatusCode();
+
+        return false;
+        // I am HOPING for a 404, but any other error - non 200-299 status code
+        // which would include not being able to connect to the server, or whatever, should be
+        // an error and we should throw an exception.
+
     
     }
 }

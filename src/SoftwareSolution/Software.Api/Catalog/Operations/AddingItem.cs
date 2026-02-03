@@ -29,13 +29,19 @@ public static class AddingItem
         // todo: validate vendor id against vendor api
         var doesVendorExist = await api.CheckIfVendorExistsAsync(req.VendorId, token);
 
-        // todo: persist to database
-        var fakeResponse = new CatalogItemResponse()
+        if (doesVendorExist)
         {
-            Id = Guid.NewGuid(),
-            Title = req.Title,
-            VendorId = req.VendorId
-        };
-        return TypedResults.Ok(fakeResponse);
+            // todo: persist to database
+            var fakeResponse = new CatalogItemResponse()
+            {
+                Id = Guid.NewGuid(),
+                Title = req.Title,
+                VendorId = req.VendorId
+            };
+            return TypedResults.Ok(fakeResponse);
+        } else
+        {
+            return TypedResults.BadRequest("No Vendor With That Id");
+        }
     }
 }
