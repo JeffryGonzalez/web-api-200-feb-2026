@@ -1,5 +1,5 @@
 using Marten;
-using Software.Api.Controllers;
+using Software.Api.Catalog;
 
 var builder = WebApplication.CreateBuilder(args); // Hey Microsoft, give me the stuff you think I'll need.
 builder.AddNpgsqlDataSource("software-db");
