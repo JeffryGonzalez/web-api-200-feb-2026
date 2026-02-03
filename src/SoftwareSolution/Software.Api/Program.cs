@@ -1,5 +1,6 @@
 using Marten;
-using Software.Api.Controllers;
+using Software.Api.BackingApis;
+using Software.Api.Catalog;
 
 var builder = WebApplication.CreateBuilder(args); // Hey Microsoft, give me the stuff you think I'll need.
 builder.AddNpgsqlDataSource("software-db");
@@ -15,6 +16,14 @@ builder.AddServiceDefaults(); // Add our "standard" resiliency, open telemetry, 
 // Add services to the container.
 builder.Services.AddValidation(); // This is new. Do code gen for validation.
 builder.Services.AddProblemDetails(); // I'll talk about this in a second.
+
+var vendorApiUrl = builder.Configuration.GetValue<string>("VENDORS_API_HTTP") ??
+                   throw new Exception("No Vendor API Url Provided");
+builder.Services.AddHttpClient<VendorsApi>(client =>
+{
+    
+    client.BaseAddress = new Uri(vendorApiUrl); 
+});
 
 builder.Services.AddMarten(config =>
 {

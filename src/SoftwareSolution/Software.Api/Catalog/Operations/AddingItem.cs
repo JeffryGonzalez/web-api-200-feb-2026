@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Software.Api.BackingApis;
 
 namespace Software.Api.Catalog.Operations;
 
@@ -8,7 +9,7 @@ public record CatalogItemRequest
     [Required, MinLength(3), MaxLength(100)]
     public string Title { get; set; } = string.Empty;
     [Required]
-    public string VendorId { get; set; } = string.Empty;
+    public Guid VendorId { get; set; }
 
 }
 
@@ -16,15 +17,20 @@ public record CatalogItemResponse
 {
     public required Guid Id { get; set; }
     public required string Title { get; set; } = string.Empty;
-    public required string VendorId { get; set; } = string.Empty;
+    public required Guid VendorId { get; set; }
 }
 
 public static class AddingItem
 {
-    public static Results<Ok<CatalogItemResponse>, BadRequest<string>> Post(CatalogItemRequest req)
+    public static async Task<Results<Ok<CatalogItemResponse>, BadRequest<string>>> Post(CatalogItemRequest req, VendorsApi api)
     {
      
         // todo: validate vendor id against vendor api
+        var goodVendor = await api.IsValidVendorAsync(req.VendorId);
+        if (!goodVendor)
+        {
+            return TypedResults.BadRequest("No Vendor With that Id");
+        }
         // todo: persist to database
         var fakeResponse = new CatalogItemResponse()
         {

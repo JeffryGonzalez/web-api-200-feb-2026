@@ -41,8 +41,8 @@ POST https://localhost:9000/catalog
 Content-Type: application/json
 
 {
-    "tile": "Visual Studio Code",
-    "vendor": "https://vendors.company.com/vendors/389389389"
+    "title": "Visual Studio Code",
+    "vendorId": "13fa147d-df90-482d-ac55-eed46b96de93"
 }
 ```
 
