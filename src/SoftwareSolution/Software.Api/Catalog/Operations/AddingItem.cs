@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Software.Api.BackingApis;
 
 namespace Software.Api.Catalog.Operations;
 
@@ -21,10 +22,13 @@ public record CatalogItemResponse
 
 public static class AddingItem
 {
-    public static Results<Ok<CatalogItemResponse>, BadRequest<string>> Post(CatalogItemRequest req)
+    public static async Task< Results<Ok<CatalogItemResponse>, BadRequest<string>>> 
+        Post(CatalogItemRequest req, Vendors api, CancellationToken token)
     {
-     
+
         // todo: validate vendor id against vendor api
+        var doesVendorExist = await api.CheckIfVendorExistsAsync(req.VendorId, token);
+
         // todo: persist to database
         var fakeResponse = new CatalogItemResponse()
         {
