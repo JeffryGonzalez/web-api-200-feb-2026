@@ -17,6 +17,8 @@ public class Vendors(HttpClient client, IConfiguration config)
         {
             return false;
         }
+        // don't get fancy with exception handling here. Or anywhere, on HTTP calls.
+
         response.EnsureSuccessStatusCode();
 
         return false;

@@ -4,7 +4,7 @@ using Software.Api.Catalog;
 
 var builder = WebApplication.CreateBuilder(args); // Hey Microsoft, give me the stuff you think I'll need.
 builder.AddNpgsqlDataSource("software-db");
-//builder.AddServiceDefaults(); // Add our "standard" resiliency, open telemetry, all that.
+builder.AddServiceDefaults(); // Add our "standard" resiliency, open telemetry, all that.
 // ASPNETCORE_ENVIRONMENT=Tacos
 // The last place is the actual environment variables on the machine.
 

@@ -26,6 +26,7 @@ namespace Microsoft.Extensions.Hosting
 
             builder.Services.AddServiceDiscovery();
 
+            // this is for ALL http clients in your app.
             builder.Services.ConfigureHttpClientDefaults(http =>
             {
                 // Turn on resilience by default
