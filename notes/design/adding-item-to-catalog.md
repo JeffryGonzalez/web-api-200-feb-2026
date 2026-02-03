@@ -36,16 +36,33 @@ GET https://softwarecenter.company.com/catalog?vendor=microsoft
 
 // synchronous model - if you get a success status code here, it means the work is done.
 
+Verifying:
+- my API (SoftwareApi) called the right remote URL AS CONFIGURED
+- It used the right API AS CONFIGURED
+- I did my part!
+
+
+
+
 ```http
 POST https://localhost:9000/catalog
 Content-Type: application/json
 
 {
     "title": "Visual Studio Code",
-    "vendorId": "b1d6f5a1-3f49-4b14-9b6b-0c1d0a1f0002"
+    "vendorId": "13fa147d-df90-482d-ac55-eed46b96de93"
 }
 ```
 
+```http
+POST https://localhost:9000/catalog
+Content-Type: application/json
+
+{
+    "title": "Visual Studio Code",
+    "vendorId": "a3fa147d-df90-482d-ac55-eed46b96de93"
+}
+```
 What can go wrong here:
 
 - title is bad. (require, already exists, etc.)

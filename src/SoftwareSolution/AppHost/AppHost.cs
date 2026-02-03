@@ -1,7 +1,12 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var vendorApi = builder.AddExternalService("vendors-api", "https://work-share.akita-velociraptor.ts.net/");
-var vendorApiKey = builder.AddParameter("apiKey", "005");
+var mappingsPath = Path.Combine(Directory.GetCurrentDirectory(), "__admin", "mappings");
+var vendorApi = builder.AddWireMock("vendors-api")
+    .WithMappingsPath(mappingsPath)
+    .WithWatchStaticMappings();
+
+// var vendorApi = builder.AddExternalService("vendors-api", "https://work-share.akita-velociraptor.ts.net/");
+var vendorApiKey = builder.AddParameter("apiKey", "999");
 var pg = builder.AddPostgres("pg-server")
     .WithLifetime(ContainerLifetime.Persistent);
 
@@ -14,6 +19,7 @@ var softwareApi = builder.AddProject<Projects.Software_Api>("software-api")
     .WithReference(softwareDb)
     .WithReference(vendorApi)
     .WithEnvironment("VENDOR_API_KEY", vendorApiKey)
-    .WaitFor(softwareDb)    ;
+    .WaitFor(softwareDb) 
+    .WaitFor(vendorApi);
 
 builder.Build().Run();
