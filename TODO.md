@@ -1,18 +1,31 @@
 - [ ] Key Points Doc
-- [ ] 
 - [ ] The Read Model
-  - [ ] Yarp - gateway
-  - [ ] Create the paths 
-  - [ ] "Separate Ways" - move that Vendor API internal
-  - [ ] Make sure the actual Vendors API is running.
-  - [ ] Move the Vendor API Project into this repo.
+  - [X] Yarp - gateway
+  - [X] Create the paths 
+    - [X] In the `yarp.config` in the Gateway
+      - `https://gateway.dev.localhost:7292/api/software`
+      - `https://gateway.dev.localhost:7292/api/vendors`
+      - Show the service location in the config
+      - Show the service location in program.cs of software.
+      - Could we change the Vendor.cs API client, with the API Key? - routing to yourself.
+  - [X] Add Scalar OpenApi Visualizer
+    -  `http://localhost:53421/` 
+  - [ ] "Separate Ways" - move that Vendor API internal 
+    - [ ] Move Vendors to Internal
+    - [ ] Make an API For This
+    - [ ] Show a Aspire HTTP Command
 - [ ] Background work
-  - [ ] Copy Some Code of a Background Worker in 
-  - [ ] Messaging
+  - [ ] Copy Some Code of a Background Worker in As An Example
+  - [ ] Messaging - Show the Demo Code
+  - [ ] Add the demo code to the repo.
     - [ ] Patterns
       - [ ] Queue
       - [ ] Fan-Out
       - [ ] Pub-Sub
       - [ ] Event Sourcing
-- [ ] Add Vendor Item
-- [ ] 
+- [ ] Add Vendor 
+  - [ ] Have it publish an event.
+  - [ ] Source that in the Software API
+- [ ] Angular App
+  - [X] Create It (`/src/software-frontend`)
+  - [ ] Show how to get the open-api specs.

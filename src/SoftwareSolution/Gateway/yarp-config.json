@@ -27,6 +27,13 @@
             "Set": "001"
           }
         ]
+      },
+      "frontendDevRoute": {
+        "ClusterId": "frontend-dev",
+        "Match": {
+          "Path": "/{**catch-all}"
+        }
+       
       }
     },
     "Clusters": {
@@ -41,6 +48,13 @@
         "Destinations": {
           "vendorsDestination": {
             "Address": "https://vendors-api/"
+          }
+        }
+      },
+      "frontend-dev": {
+        "Destinations": {
+          "frontend-dev-destination": {
+            "Address": "http://localhost:4200/"
           }
         }
       }

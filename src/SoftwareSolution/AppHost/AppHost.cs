@@ -9,7 +9,9 @@ var scalar = builder.AddScalarApiReference(options =>
         .AllowSelfSignedCertificates() // Trust self-signed certificates
         .WithTheme(ScalarTheme.Laserwave);
 });
-var mappingsPath = Path.Combine(Directory.GetCurrentDirectory(), "__admin", "mappings");
+
+// Got Rid of this For Now...
+// var mappingsPath = Path.Combine(Directory.GetCurrentDirectory(), "__admin", "mappings");
 // var vendorApi = builder.AddWireMock("vendors-api")
 //     .WithMappingsPath(mappingsPath)
 //     .WithWatchStaticMappings();
@@ -24,15 +26,12 @@ var pg = builder.AddPostgres("pg-server")
 var softwareDb = pg.AddDatabase("software-db");
 // might need an initialization script, or a prepared base image, more later.
 
-
-
 var softwareApi = builder.AddProject<Projects.Software_Api>("software-api")
     .WithReference(softwareDb)
     .WithReference(vendorApi)
     .WithEnvironment("VENDOR_API_KEY", vendorApiKey)
     .WaitFor(softwareDb) 
     .WaitFor(vendorApi);
-
 
 var gateway = builder.AddProject<Projects.Gateway>("gateway")
     .WithReference(softwareApi)
