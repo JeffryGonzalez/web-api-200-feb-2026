@@ -7,7 +7,7 @@ var scalar = builder.AddScalarApiReference(options =>
     options
         .PreferHttpsEndpoint() // Use HTTPS endpoints when available
         .AllowSelfSignedCertificates() // Trust self-signed certificates
-        .WithTheme(ScalarTheme.Laserwave);
+        .WithTheme(ScalarTheme.DeepSpace);
 });
 
 // Got Rid of this For Now...
@@ -45,5 +45,6 @@ var gateway = builder.AddProject<Projects.Gateway>("gateway")
     .WaitFor(softwareApi);
 
 scalar.WithApiReference(softwareApi);
+scalar.WithApiReference(vendorApi);
 
 builder.Build().Run();
