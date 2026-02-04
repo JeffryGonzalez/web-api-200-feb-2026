@@ -2,8 +2,8 @@ using Marten;
 using Software.Api.BackingApis;
 using Software.Api.Catalog;
 using Wolverine;
+using Wolverine.Marten;
 using Wolverine.Nats;
-using InternalMessages =  Messages.SoftwareCenter;
 
 var builder = WebApplication.CreateBuilder(args); // Hey Microsoft, give me the stuff you think I'll need.
 builder.AddNpgsqlDataSource("software-db"); // service location
@@ -55,13 +55,14 @@ builder.UseWolverine(options =>
 });
 
 builder.Services.AddMarten(config =>
-{
-    // add a couple of different services to the services collection
-    // one is for you, and the other is a hairy, spooky multi-threaded and thread-safe
-    // service that manages the connection, SRE, etc.
+    {
+        // add a couple of different services to the services collection
+        // one is for you, and the other is a hairy, spooky multi-threaded and thread-safe
+        // service that manages the connection, SRE, etc.
 
-}).UseNpgsqlDataSource()
-.UseLightweightSessions();
+    }).UseNpgsqlDataSource()
+    .UseLightweightSessions()
+    .IntegrateWithWolverine();
 
 
 builder.Services.AddControllers();
@@ -90,21 +91,3 @@ app.MapCatalogRoutes();
 
 app.MapDefaultEndpoints(); // this adds the endpoints defined in the ServiceDefaults - which are mostly for health checks.
 app.Run();
-
-
-
-public static class VendorHandler
-{
-    public static void Handle(InternalMessages.VendorCreated message, ILogger logger)
-    {
-        // insert a row into a table.
-        logger.LogInformation($"Vendor Created: {message.Name}");
-    }
-
-    public static void Handle(InternalMessages.VendorDeactivated message, ILogger logger)
-        {
-
-        // remove it from the table
-            logger.LogInformation($"Vendor Deactivated: {message.Id}");
-    }
-}

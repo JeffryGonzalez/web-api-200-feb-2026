@@ -4,7 +4,7 @@
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "applicationUrl": "http://gateway.dev.localhost:5211",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -13,7 +13,7 @@
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "applicationUrl": "https://gateway.dev.localhost:7292;http://gateway.dev.localhost:5211",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
