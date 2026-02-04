@@ -32,6 +32,7 @@ var vendorDb = pg.AddDatabase("vendors-db");
 
 var vendorApi = builder.AddProject<Projects.Vendors_Api>("vendors-api")
     .WithReference(vendorDb)
+    .WithHttpCommand("seed", "Seed Data")
     .WaitFor(vendorDb);
 
 var softwareApi = builder.AddProject<Projects.Software_Api>("software-api")
