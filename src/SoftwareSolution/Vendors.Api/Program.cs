@@ -7,12 +7,16 @@ using Wolverine.Marten;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.AddServiceDefaults();
+
 builder.AddNpgsqlDataSource("vendors-db");
 // IMessageBus
 builder.UseWolverine(options =>
 {
-    options.Policies.UseDurableLocalQueues();
+    options.Policies.AutoApplyTransactions();
+    options.Policies.UseDurableInboxOnAllListeners();
+    //options.Policies.UseDurableOutboxOnAllSendingEndpoints();
 });
 
 // Add Marten - with a database - for the events, because these need to be durable.
