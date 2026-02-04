@@ -1,7 +1,9 @@
 
+using JasperFx.Events.Projections;
 using Marten;
 using Microsoft.OpenApi;
 using Vendors.Api.Vendors;
+using Vendors.Api.Vendors.ReadModels;
 using Wolverine;
 using Wolverine.Marten;
 
@@ -14,6 +16,7 @@ builder.AddNpgsqlDataSource("vendors-db");
 // IMessageBus
 builder.UseWolverine(options =>
 {
+
     options.Policies.AutoApplyTransactions();
     options.Policies.UseDurableInboxOnAllListeners();
     //options.Policies.UseDurableOutboxOnAllSendingEndpoints();
@@ -22,10 +25,12 @@ builder.UseWolverine(options =>
 // Add Marten - with a database - for the events, because these need to be durable.
 builder.Services.AddMarten(options =>
 {
+    options.Projections.Add<UiVendorListProjection>(ProjectionLifecycle.Async);
 
 }).IntegrateWithWolverine()
 .UseLightweightSessions()
-.UseNpgsqlDataSource();
+.UseNpgsqlDataSource()
+.AddAsyncDaemon(JasperFx.Events.Daemon.DaemonMode.Solo);
 
 
 builder.Services.AddOpenApi(config =>

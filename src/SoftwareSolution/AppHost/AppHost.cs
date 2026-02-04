@@ -21,8 +21,9 @@ var scalar = builder.AddScalarApiReference(options =>
 
 var vendorApiKey = builder.AddParameter("apiKey", "001");
 
-var pg = builder.AddPostgres("pg-server")
-    .WithPgWeb()
+var pg = builder.AddPostgres("pg-server") // you can nail down the port, the user, etc.
+    
+  .WithPgWeb() // web based dashboards that might be enough while you are doing development.
     .WithLifetime(ContainerLifetime.Persistent);
 
 var softwareDb = pg.AddDatabase("software-db");

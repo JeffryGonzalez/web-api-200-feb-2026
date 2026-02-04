@@ -9,7 +9,7 @@ public static class VendorHandler
         // do everything there that you would need to do when a vendor is created.
         // or just return another command, and they will "cascade"
 
-        await Task.Delay(60000); // One Minute Delay to simulate long running process
+       // await Task.Delay(30000); // One Minute Delay to simulate long running process
         if(command.Name == "Bad Vendor")
         {
             throw new Exception("This is a bad vendor, we can't create it");

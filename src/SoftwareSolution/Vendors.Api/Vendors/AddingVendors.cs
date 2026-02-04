@@ -9,7 +9,7 @@ public static class AddingVendors
     {
         // bridge between HTTP and a command. 
         var command = new CreateAVendor(Guid.NewGuid(), req.Name);
-        await bus.PublishAsync(command);
+        await bus.PublishAsync(command); // write this command to a database. durable.
         return TypedResults.Created($"/vendors/{command.Id}");
     }
  }
