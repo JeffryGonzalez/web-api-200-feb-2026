@@ -17,6 +17,7 @@ public static class Extensions
 
             endpoints.MapPost("/math", async (AddThem request, IMessageBus bus) =>
             {
+                // pub sub - probably not a good idea... but for completeness. 
                 var result = await bus.InvokeAsync<NumbersAdded>(request);
                 return Results.Ok(result);
             });

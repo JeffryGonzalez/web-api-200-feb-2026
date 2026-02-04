@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="AppHost/AppHost.csproj" Id="572c9d01-9284-4fa6-8fef-32f8fce6ad5d" />
   <Project Path="Gateway/Gateway.csproj" />
+  <Project Path="Messages/Messages.csproj" Id="0288885d-cb9c-4d64-b558-6c02186a11c6" />
   <Project Path="ServiceDefaults/ServiceDefaults.csproj" Id="6918a32b-006d-469a-8e73-53f479827be8" />
   <Project Path="Software.Api/Software.Api.csproj" />
   <Project Path="Vendors.Api/Vendors.Api.csproj" />

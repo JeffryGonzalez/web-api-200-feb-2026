@@ -17,7 +17,7 @@ builder.UseWolverine(options =>
     options.ListenToNatsSubject("messages-sent")
         .BufferedInMemory();
     
-    options.ListenToNatsSubject("people.created")
+    options.ListenToNatsSubject("people.created") // people.>
         .UseJetStream("PEOPLE", "plain-listener");
 });
 var app = builder.Build();

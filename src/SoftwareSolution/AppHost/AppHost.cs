@@ -21,6 +21,10 @@ var scalar = builder.AddScalarApiReference(options =>
 
 var vendorApiKey = builder.AddParameter("apiKey", "001");
 
+var nats = builder.AddNats("broker")
+    .WithJetStream()
+    .WithLifetime(ContainerLifetime.Persistent);
+
 var pg = builder.AddPostgres("pg-server") // you can nail down the port, the user, etc.
     
   .WithPgWeb() // web based dashboards that might be enough while you are doing development.
@@ -33,14 +37,17 @@ var vendorDb = pg.AddDatabase("vendors-db");
 
 var vendorApi = builder.AddProject<Projects.Vendors_Api>("vendors-api")
     .WithReference(vendorDb)
+    .WithReference(nats)
     .WithHttpCommand("seed", "Seed Data")
     .WaitFor(vendorDb);
 
 var softwareApi = builder.AddProject<Projects.Software_Api>("software-api")
     .WithReference(softwareDb)
     .WithReference(vendorApi)
+    .WithReference(nats)
     .WithEnvironment("VENDOR_API_KEY", vendorApiKey)
     .WaitFor(softwareDb) 
+    .WaitFor(nats)
     .WaitFor(vendorApi);
 
 var gateway = builder.AddProject<Projects.Gateway>("gateway")

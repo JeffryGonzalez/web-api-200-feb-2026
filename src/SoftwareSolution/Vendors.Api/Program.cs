@@ -6,6 +6,8 @@ using Vendors.Api.Vendors;
 using Vendors.Api.Vendors.ReadModels;
 using Wolverine;
 using Wolverine.Marten;
+using Wolverine.Nats;
+using InternalMessages = Messages.SoftwareCenter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,26 @@ builder.AddNpgsqlDataSource("vendors-db");
 // IMessageBus
 builder.UseWolverine(options =>
 {
+    options.UseNats(builder.Configuration.GetConnectionString("broker") ??
+                throw new Exception("No NATS connection string configured"))
+    .AutoProvision()
+    .UseJetStream(js =>
+    {
+        js.MaxDeliver = 5;
+        js.AckWait = TimeSpan.FromSeconds(30);
+    })
+
+    .DefineStream("VENDORS", stream =>
+        stream.WithSubject("vendor.>")
+            .WithLimits(maxMessages: 5_000, maxAge: TimeSpan.FromDays(5))
+            //.WithReplicas(3)
+            .EnableScheduledDelivery());
+
+    options.PublishMessage<InternalMessages.VendorCreated>()
+    .ToNatsSubject("vendor.created");
+
+    options.PublishMessage<InternalMessages.VendorDeactivated>()
+    .ToNatsSubject("vendor.deactivated");
 
     options.Policies.AutoApplyTransactions();
     options.Policies.UseDurableInboxOnAllListeners();

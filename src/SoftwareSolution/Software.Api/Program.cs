@@ -1,6 +1,9 @@
 using Marten;
 using Software.Api.BackingApis;
 using Software.Api.Catalog;
+using Wolverine;
+using Wolverine.Nats;
+using InternalMessages =  Messages.SoftwareCenter;
 
 var builder = WebApplication.CreateBuilder(args); // Hey Microsoft, give me the stuff you think I'll need.
 builder.AddNpgsqlDataSource("software-db"); // service location
@@ -26,6 +29,30 @@ builder.Services.AddHttpClient<Vendors>(client =>
 
 builder.Services.AddValidation(); // This is new. Do code gen for validation.
 builder.Services.AddProblemDetails(); // I'll talk about this in a second.
+
+builder.UseWolverine(options =>
+{
+    options.UseNats(builder.Configuration.GetConnectionString("broker") ??
+            throw new Exception("No NATS connection string configured"))
+.AutoProvision()
+.UseJetStream(js =>
+{
+    js.MaxDeliver = 5;
+    js.AckWait = TimeSpan.FromSeconds(30);
+})
+
+.DefineStream("VENDORS", stream =>
+    stream.WithSubject("vendor.>")
+        .WithLimits(maxMessages: 5_000, maxAge: TimeSpan.FromDays(5))
+        //.WithReplicas(3)
+        .EnableScheduledDelivery());
+
+    /* options.ListenToNatsSubject("people.>") // I want to see any message products.*.available.uk
+    .UseJetStream("PEOPLE", "api-two");*/
+
+    options.ListenToNatsSubject("vendor.>")
+    .UseJetStream("VENDORS", "software-api");
+});
 
 builder.Services.AddMarten(config =>
 {
@@ -63,3 +90,21 @@ app.MapCatalogRoutes();
 
 app.MapDefaultEndpoints(); // this adds the endpoints defined in the ServiceDefaults - which are mostly for health checks.
 app.Run();
+
+
+
+public static class VendorHandler
+{
+    public static void Handle(InternalMessages.VendorCreated message, ILogger logger)
+    {
+        // insert a row into a table.
+        logger.LogInformation($"Vendor Created: {message.Name}");
+    }
+
+    public static void Handle(InternalMessages.VendorDeactivated message, ILogger logger)
+        {
+
+        // remove it from the table
+            logger.LogInformation($"Vendor Deactivated: {message.Id}");
+    }
+}

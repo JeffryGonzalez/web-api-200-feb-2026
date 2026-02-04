@@ -27,7 +27,7 @@ builder.UseWolverine(options =>
     options.ListenToNatsSubject("math.add")
         .ProcessInline();
     
-    options.ListenToNatsSubject("people.>")
+    options.ListenToNatsSubject("people.>") // I want to see any message products.*.available.uk
         .UseJetStream("PEOPLE", "api-two");
 
 
