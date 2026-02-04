@@ -3,4 +3,5 @@
   <Project Path="Gateway/Gateway.csproj" />
   <Project Path="ServiceDefaults/ServiceDefaults.csproj" Id="6918a32b-006d-469a-8e73-53f479827be8" />
   <Project Path="Software.Api/Software.Api.csproj" />
+  <Project Path="Vendors.Api/Vendors.Api.csproj" />
 </Solution>

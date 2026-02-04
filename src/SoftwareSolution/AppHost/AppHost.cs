@@ -16,7 +16,8 @@ var scalar = builder.AddScalarApiReference(options =>
 //     .WithMappingsPath(mappingsPath)
 //     .WithWatchStaticMappings();
 
-var vendorApi = builder.AddExternalService("vendors-api", "https://work-share.akita-velociraptor.ts.net/");
+// old remote one
+// var vendorApi = builder.AddExternalService("vendors-api", "https://work-share.akita-velociraptor.ts.net/");
 
 var vendorApiKey = builder.AddParameter("apiKey", "001");
 
@@ -25,6 +26,9 @@ var pg = builder.AddPostgres("pg-server")
 
 var softwareDb = pg.AddDatabase("software-db");
 // might need an initialization script, or a prepared base image, more later.
+
+
+var vendorApi = builder.AddProject<Projects.Vendors_Api>("vendors-api");
 
 var softwareApi = builder.AddProject<Projects.Software_Api>("software-api")
     .WithReference(softwareDb)

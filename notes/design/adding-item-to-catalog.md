@@ -42,6 +42,9 @@ Verifying:
 - I did my part!
 
 ### Get a List of Vendors (Read Model)
+
+Gateway is at localhost:7292 during development.
+
 ```http
 GET https://localhost:7292/api/vendors
 ```
@@ -66,7 +69,7 @@ Content-Type: application/json
 
 {
     "title": "Visual Studio Code",
-    "vendorId": "b1d6f5a1-3f49-4b14-9b6b-0c1d0a1f0001"
+    "vendorId": "b1d6f5a1-3f49-4b14-9b6b-0a1d0a1f0001"
 }
 ```
 What can go wrong here:
