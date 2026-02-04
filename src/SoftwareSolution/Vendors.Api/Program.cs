@@ -1,10 +1,29 @@
 
+using Marten;
 using Microsoft.OpenApi;
-using Scalar.AspNetCore;
-using Vendors.Api;
+using Vendors.Api.Vendors;
+using Wolverine;
+using Wolverine.Marten;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.AddServiceDefaults();
+builder.AddNpgsqlDataSource("vendors-db");
+// IMessageBus
+builder.UseWolverine(options =>
+{
+    options.Policies.UseDurableLocalQueues();
+});
+
+// Add Marten - with a database - for the events, because these need to be durable.
+builder.Services.AddMarten(options =>
+{
+
+}).IntegrateWithWolverine()
+.UseLightweightSessions()
+.UseNpgsqlDataSource();
+
+
 builder.Services.AddOpenApi(config =>
 {
     config.AddDocumentTransformer((doc, ctx, ct) =>
@@ -19,19 +38,15 @@ builder.Services.AddOpenApi(config =>
     });
 });
 
+
 var app = builder.Build();
 
 
-app.MapVendorApiEndpoints();
-app.MapOpenApi();
-app.MapScalarApiReference(options =>
-{
-    options.Theme = ScalarTheme.BluePlanet;
-    options.Title = "Vendors API Reference";
-    
-});
 
+app.MapOpenApi();
+
+app.MapVendorEndpoints();
 app.MapDefaultEndpoints();
 
-app.MapGet("/", () => Results.Redirect("/scalar")).WithDescription("Redirect to API Reference").WithDisplayName("Home Redirect");
+
 app.Run();
