@@ -16,11 +16,11 @@ builder.AddServiceDefaults(); // Add our "standard" resiliency, open telemetry, 
 // Add services to the container.
 // TypedHttpClient
 
-var vendorApi = builder.Configuration.GetValue<string>("VENDORS_API_HTTP") ?? throw new Exception("No Vendor Url");
+//var vendorApi = builder.Configuration.GetValue<string>("VENDORS_API") ?? throw new Exception("No Vendor Url");
 
 builder.Services.AddHttpClient<Vendors>(client =>
 {
-    client.BaseAddress = new Uri(vendorApi);
+    client.BaseAddress = new Uri("https://vendors-api");
 }); // todo: throw a sample of proxy config.
 
 

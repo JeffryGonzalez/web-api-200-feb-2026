@@ -1,0 +1,18 @@
+- [ ] Key Points Doc
+- [ ] 
+- [ ] The Read Model
+  - [ ] Yarp - gateway
+  - [ ] Create the paths 
+  - [ ] "Separate Ways" - move that Vendor API internal
+  - [ ] Make sure the actual Vendors API is running.
+  - [ ] Move the Vendor API Project into this repo.
+- [ ] Background work
+  - [ ] Copy Some Code of a Background Worker in 
+  - [ ] Messaging
+    - [ ] Patterns
+      - [ ] Queue
+      - [ ] Fan-Out
+      - [ ] Pub-Sub
+      - [ ] Event Sourcing
+- [ ] Add Vendor Item
+- [ ] 
