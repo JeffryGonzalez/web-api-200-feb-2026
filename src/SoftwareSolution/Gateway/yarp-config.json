@@ -21,10 +21,6 @@
         "Transforms": [
           {
             "PathRemovePrefix": "/api"
-          },
-          {
-            "QueryValueParameter": "apiKey",
-            "Set": "001"
           }
         ]
       },
